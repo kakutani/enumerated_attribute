@@ -21,7 +21,13 @@ module EnumeratedAttribute
 
 			def write_enumerated_attribute(name, val)
 				name = name.to_s
-				return write_attribute(name, val) unless self.class.has_enumerated_attribute?(name)
+				unless self.class.has_enumerated_attribute?(name)
+					if column_for_attribute(name) || attributes.has_key?(name)
+						return write_attribute(name, val)
+					else
+						return
+					end
+				end
 				val = nil if val == ''
 				val_str = val.to_s if val
 				val_sym = val.to_sym if val
