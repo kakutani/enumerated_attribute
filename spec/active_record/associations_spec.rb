@@ -127,4 +127,15 @@ describe "Employee" do
 		emp = Employee.find(e.id)
 		emp.company.status.should == :c_corp
 	end
+
+    it "should create successfully via hash on instantiation" do
+		Company.delete_all
+		Employee.delete_all
+		c = Company.create!(:name=>company_name, :status=>:c_corp)
+		e = Employee.create!(:name=>'juanita', :status=>:part_time, :company => c)
+		e.save!
+
+		emp = Employee.find(e.id)
+		emp.company.should == c
+    end
 end
